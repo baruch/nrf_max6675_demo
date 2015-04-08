@@ -178,12 +178,22 @@ void main()
 
 	while(1)
 	{
-		uint16_t data = max6675_sample();
+		uint16_t data = 0;
+		uint16_t value;
+		uint8_t i;
+
+		for (value = 0, i = 0; i < 4; i++) {
+			data = max6675_sample();
+			value += max6675_value(data);
+			delay_ms(250);
+		}
+		value /= 4;
+
 		putuint16(data);
 		putchar(' ');
-		putuint16(max6675_value(data));
+		putuint16(value);
 		putchar(' ');
-		putfixed(max6675_value(data));
+		putfixed(value);
 		putchar(' ');
 		putuint16(max6675_input_error(data));
 		putstr("\r\n");
